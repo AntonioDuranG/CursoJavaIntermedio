@@ -13,6 +13,8 @@ public class UsuarioTO {
 
     private int idusuario;
 
+    private String user;
+    private String password;
     private String nombre;
     private String apterno;
     private String amaterno;
@@ -22,6 +24,22 @@ public class UsuarioTO {
         this.nombre = nombre;
         this.apterno = apterno;
         this.amaterno = amaterno;
+    }
+
+    public UsuarioTO(String user, String password, String nombre, String apterno, String amaterno) {
+        this.user = user;
+        this.password = password;
+        this.nombre = nombre;
+        this.apterno = apterno;
+        this.amaterno = amaterno;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public int getIdusuario() {

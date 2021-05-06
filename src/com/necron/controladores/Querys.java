@@ -11,5 +11,9 @@ package com.necron.controladores;
  */
 public class Querys {
 
-    public static final String QUERY_LOGIN = "SELECT IDUSUARIO,NOMBRE,APATERNO,AMATERNO FROM pruebas.usuariostb where user = ? and password = ?";
+    public static final String QUERY_LOGIN = "SELECT IDUSUARIO,NOMBRE,APATERNO,AMATERNO FROM usuariostb where user = ? and password = ?";
+
+    public static final String QUERY_USUARIOS = "SELECT IDUSUARIO,USER,PASSWORD,NOMBRE,APATERNO,AMATERNO FROM usuariostb";
+
+    public static final String INSERT_USUARIO = "insert into usuariostb (USER,PASSWORD,NOMBRE,APATERNO,AMATERNO) values (?,?,?,?,?)";
 }

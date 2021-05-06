@@ -11,6 +11,10 @@ import com.necron.to.UsuarioTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -18,13 +22,68 @@ import java.sql.ResultSet;
  */
 public class UsuarioDAO {
 
-    public UsuarioTO consultar(String user, String password) {
+    public Map<String, UsuarioTO> consultarUsuariosMapa() {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
+        Map<String, UsuarioTO> mapa = new HashMap<>();
 
         try {
             con = DBConnectionManager.getInstance().getConnection();
+            ps = con.prepareStatement(Querys.QUERY_USUARIOS);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String llave = rs.getString("USER") + " | " + rs.getString("PASSWORD"); ///llave
+                mapa.put(llave,//<------indice o llabe
+                        new UsuarioTO(
+                                rs.getInt("IDUSUARIO"),
+                                rs.getString("NOMBRE"),
+                                rs.getString("APATERNO"),
+                                rs.getString("AMATERNO")));//<-- Objeto indexado
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionUtil.endConnection(rs, ps, con);
+        }
+        return mapa;
+    }
+
+    public List<UsuarioTO> consultarUsuarios() {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<UsuarioTO> usuarios = new ArrayList<>();
+
+        try {
+            con = DBConnectionManager.getInstance().getConnection();
+            ps = con.prepareStatement(Querys.QUERY_USUARIOS);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                usuarios.add(
+                        new UsuarioTO(
+                                rs.getInt("IDUSUARIO"),
+                                rs.getString("NOMBRE"),
+                                rs.getString("APATERNO"),
+                                rs.getString("AMATERNO")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionUtil.endConnection(rs, ps, con);
+        }
+        return usuarios;
+    }
+
+    public UsuarioTO consultar(String user, String password) {
+        Connection con = null; //mysql
+        PreparedStatement ps = null; //ejecutas sentencias
+        ResultSet rs = null; // recibe resultado
+
+        try {
+            con = DBConnectionManager.getInstance().getConnection();
+
             ps = con.prepareStatement(Querys.QUERY_LOGIN);
             ps.setString(1, user);
             ps.setString(2, password);
@@ -43,5 +102,29 @@ public class UsuarioDAO {
             ConnectionUtil.endConnection(rs, ps, con);
         }
         return null;
+    }
+
+    public boolean crearUsuarios(List<UsuarioTO> usuarios) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DBConnectionManager.getInstance().getConnection();
+            ps = con.prepareStatement(Querys.INSERT_USUARIO);
+            for (UsuarioTO u : usuarios) {
+                int i = 1;
+                ps.setString(i++, u.getUser());
+                ps.setString(i++, u.getPassword());
+                ps.setString(i++, u.getNombre());
+                ps.setString(i++, u.getApterno());
+                ps.setString(i++, u.getAmaterno());
+                ps.executeUpdate();
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionUtil.endConnection(null, ps, con);
+        }
+        return false;
     }
 }

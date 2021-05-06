@@ -8,6 +8,8 @@ package pruebas;
 import com.necron.controladores.UsuarioDAO;
 import com.necron.database.DBConnectionManager;
 import com.necron.to.UsuarioTO;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -15,14 +17,49 @@ import com.necron.to.UsuarioTO;
  */
 public class Pruebas {
 
+    //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
     public static void main(String[] args) {
 
         String database = "pruebas";
         DBConnectionManager.initInstance(database);
 
-        UsuarioDAO dao = new UsuarioDAO();
-        UsuarioTO usuario = dao.consultar("admin", "admin");
-        System.out.println("Bienvenido!!! " + usuario.getApterno() + " " + usuario.getAmaterno() + " " + usuario.getNombre());
+        UsuarioDAO controlador = new UsuarioDAO();
+
+//        List<UsuarioTO> usuarios = new ArrayList<>();
+//        for (int i = 0; i < 100; i++) {
+//            String user = "admin" + i;
+//            String pasword = "admins" + i;
+//            String nombre = "juan" + i;
+//            String apaterno = "zaldivar" + i;
+//            String amaterno = "roldan" + i;
+////            
+//            usuarios.add(
+//                    new UsuarioTO(user, pasword, nombre, apaterno, amaterno)
+//            );
+////            
+//        }
+//        
+//        boolean isvalidate = controlador.crearUsuarios(usuarios);
+//        System.out.println("IsValidate: " + isvalidate);
+//        List<UsuarioTO> usuarios = controlador.consultarUsuarios();
+//        Iterator<UsuarioTO> iter = usuarios.iterator();
+//        while (iter.hasNext()) {
+//            UsuarioTO u = iter.next();
+//            System.out.println("Bienvenido!!! " + u.getApterno() + " " + u.getAmaterno() + " " + u.getNombre());
+//        }
+        Map<String, UsuarioTO> mapa = controlador.consultarUsuariosMapa();
+        Iterator<UsuarioTO> iter = mapa.values().iterator();
+        while (iter.hasNext()) {
+            UsuarioTO u = iter.next();
+            System.out.println("Bienvenido!!! " + u.getApterno() + " " + u.getAmaterno() + " " + u.getNombre());
+        }
+        String llave = "admin76 | admins76";
+        if (mapa.get(llave) == null) {
+            System.out.println("NoExisteElUsuario");
+        } else {
+            System.out.println("El Usuario si exste con el ID: " + mapa.get(llave).getIdusuario());
+        }
+
     }
 
 }
