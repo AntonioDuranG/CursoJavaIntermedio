@@ -20,7 +20,10 @@ public class Pruebas {
     //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
     public static void main(String[] args) {
 
-        String database = "pruebas";
+        // cambiar el archivo db.properties
+        //La IP, user y password
+        
+        String database = "pruebas";//<--cambiar a tu base de datos
         DBConnectionManager.initInstance(database);
 
         UsuarioDAO controlador = new UsuarioDAO();
