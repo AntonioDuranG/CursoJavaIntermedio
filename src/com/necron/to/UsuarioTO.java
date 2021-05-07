@@ -5,6 +5,8 @@
  */
 package com.necron.to;
 
+import java.util.Date;
+
 /**
  *
  * @author freet
@@ -19,19 +21,22 @@ public class UsuarioTO {
     private String apterno;
     private String amaterno;
 
-    public UsuarioTO(int idusuario, String nombre, String apterno, String amaterno) {
+    private Date fecharegistro;
+
+    public UsuarioTO(int idusuario, String nombre, String apterno, String amaterno, Date fecharegistro) {
         this.idusuario = idusuario;
         this.nombre = nombre;
         this.apterno = apterno;
         this.amaterno = amaterno;
+        this.fecharegistro = fecharegistro;
     }
 
     public UsuarioTO(String user, String password, String nombre, String apterno, String amaterno) {
         this.user = user;
         this.password = password;
-        this.nombre = nombre;
-        this.apterno = apterno;
-        this.amaterno = amaterno;
+        this.nombre = nombre.trim().toUpperCase();
+        this.apterno = apterno.trim().toUpperCase();
+        this.amaterno = amaterno.trim().toUpperCase();
     }
 
     public String getUser() {
@@ -56,6 +61,10 @@ public class UsuarioTO {
 
     public String getAmaterno() {
         return amaterno;
+    }
+
+    public Date getFecharegistro() {
+        return fecharegistro;
     }
 
 }

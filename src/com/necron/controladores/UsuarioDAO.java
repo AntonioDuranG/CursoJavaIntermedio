@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,8 @@ public class UsuarioDAO {
                                 rs.getInt("IDUSUARIO"),
                                 rs.getString("NOMBRE"),
                                 rs.getString("APATERNO"),
-                                rs.getString("AMATERNO")));//<-- Objeto indexado
+                                rs.getString("AMATERNO"),
+                                new Date()));//<-- Objeto indexado
 
             }
         } catch (Exception e) {
@@ -66,7 +68,8 @@ public class UsuarioDAO {
                                 rs.getInt("IDUSUARIO"),
                                 rs.getString("NOMBRE"),
                                 rs.getString("APATERNO"),
-                                rs.getString("AMATERNO")));
+                                rs.getString("AMATERNO"),
+                                rs.getTimestamp("FECHAREGISTRO")));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,7 +96,8 @@ public class UsuarioDAO {
                         rs.getInt("IDUSUARIO"),
                         rs.getString("NOMBRE"),
                         rs.getString("APATERNO"),
-                        rs.getString("AMATERNO"));
+                        rs.getString("AMATERNO"),
+                        new Date());
             }
 
         } catch (Exception e) {
@@ -119,6 +123,29 @@ public class UsuarioDAO {
                 ps.setString(i++, u.getAmaterno());
                 ps.executeUpdate();
             }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionUtil.endConnection(null, ps, con);
+        }
+        return false;
+    }
+
+    public boolean crearUsuario(UsuarioTO u) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = DBConnectionManager.getInstance().getConnection();
+            ps = con.prepareStatement(Querys.INSERT_USUARIO);
+            int i = 1;
+            ps.setString(i++, u.getUser());
+            ps.setString(i++, u.getPassword());
+            ps.setString(i++, u.getNombre());
+            ps.setString(i++, u.getApterno());
+            ps.setString(i++, u.getAmaterno());
+            ps.setTimestamp(i++, new java.sql.Timestamp(new Date().getTime()));
+            ps.executeUpdate();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

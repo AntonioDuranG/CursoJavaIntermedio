@@ -20,13 +20,13 @@ public class DBConnectionManager {
     private static DBConnectionManager instance = null;
     public static int conexionesTotalesAbiertas = 0;
 
-    public DBConnectionManager(String database) {
-        init(database);
+    public DBConnectionManager(String ip, String user, String password, String database) {
+        init(ip, user, password, database);
     }
 
-    public static void initInstance(String database) {
+    public static void initInstance(String ip, String user, String password, String database) {
         if (instance == null) {
-            instance = new DBConnectionManager(database);
+            instance = new DBConnectionManager(ip, user, password, database);
         }
     }
 
@@ -34,8 +34,8 @@ public class DBConnectionManager {
         return instance;
     }
 
-    private void init(String database) {
-        managers.put(BD_SERVICIO, new ConnectionManagerPool(database));
+    private void init(String ip, String user, String password, String database) {
+        managers.put(BD_SERVICIO, new ConnectionManagerPool(ip, user, password, database));
     }
 
     public Connection getConnection() {
