@@ -20,7 +20,7 @@ public class Pruebas {
     //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
 //    Login
     public static void main(String[] args) {
-        DBConnectionManager.initInstance("192.168.200.184", "antonio", "antonio", "pruebas");
+        DBConnectionManager.initInstance("IP", "USER", "PASSWORD", "pruebas");
         String user = "admin";
         String password = "IBGOT";
         String encriptado = Util.encriptacion(password);
