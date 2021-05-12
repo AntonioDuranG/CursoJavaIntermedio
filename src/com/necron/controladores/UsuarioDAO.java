@@ -79,7 +79,7 @@ public class UsuarioDAO {
         return usuarios;
     }
 
-    public UsuarioTO consultar(String user, String password) {
+    public UsuarioTO login(String user, String password) {
         Connection con = null; //mysql
         PreparedStatement ps = null; //ejecutas sentencias
         ResultSet rs = null; // recibe resultado
@@ -132,7 +132,7 @@ public class UsuarioDAO {
         return false;
     }
 
-    public boolean crearUsuario(UsuarioTO u) {
+    public boolean crearUsuario(UsuarioTO u, String password) {
         Connection con = null;
         PreparedStatement ps = null;
         try {
@@ -140,11 +140,12 @@ public class UsuarioDAO {
             ps = con.prepareStatement(Querys.INSERT_USUARIO);
             int i = 1;
             ps.setString(i++, u.getUser());
-            ps.setString(i++, u.getPassword());
+            ps.setString(i++, password);
             ps.setString(i++, u.getNombre());
             ps.setString(i++, u.getApterno());
             ps.setString(i++, u.getAmaterno());
             ps.setTimestamp(i++, new java.sql.Timestamp(new Date().getTime()));
+            ps.setString(i++, u.getMail());
             ps.executeUpdate();
             return true;
         } catch (Exception e) {

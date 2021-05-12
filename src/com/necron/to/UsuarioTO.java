@@ -20,6 +20,7 @@ public class UsuarioTO {
     private String nombre;
     private String apterno;
     private String amaterno;
+    private String mail;
 
     private Date fecharegistro;
 
@@ -31,12 +32,13 @@ public class UsuarioTO {
         this.fecharegistro = fecharegistro;
     }
 
-    public UsuarioTO(String user, String password, String nombre, String apterno, String amaterno) {
+    public UsuarioTO(String user, String password, String nombre, String apterno, String amaterno, String mail) {
         this.user = user;
         this.password = password;
         this.nombre = nombre.trim().toUpperCase();
         this.apterno = apterno.trim().toUpperCase();
         this.amaterno = amaterno.trim().toUpperCase();
+        this.mail = mail;
     }
 
     public String getUser() {
@@ -65,6 +67,10 @@ public class UsuarioTO {
 
     public Date getFecharegistro() {
         return fecharegistro;
+    }
+
+    public String getMail() {
+        return mail;
     }
 
 }

@@ -20,14 +20,14 @@ public class Hilo extends Thread {
         UsuarioDAO controlador = new UsuarioDAO();
         int i = 0;
         while (true) {
-            controlador.crearUsuario(
-                    new UsuarioTO(
-                            "admin" + i,
-                            "adminadmin" + i,
-                            "usuario " + i,
-                            "paterno " + i,
-                            "materno " + i));
-            i++;
+//            controlador.crearUsuario(
+//                    new UsuarioTO(
+//                            "admin" + i,
+//                            "adminadmin" + i,
+//                            "usuario " + i,
+//                            "paterno " + i,
+//                            "materno " + i, ""));
+//            i++;
             System.out.println("Durmiendo.... " + new Date());
             dormir();
         }
