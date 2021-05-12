@@ -7,6 +7,7 @@ package com.necron.controladores;
 
 import com.necron.database.ConnectionUtil;
 import com.necron.database.DBConnectionManager;
+import com.necron.to.PerfilTO;
 import com.necron.to.UsuarioTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -41,6 +42,7 @@ public class UsuarioDAO {
                                 rs.getString("NOMBRE"),
                                 rs.getString("APATERNO"),
                                 rs.getString("AMATERNO"),
+                                0,
                                 new Date()));//<-- Objeto indexado
 
             }
@@ -63,13 +65,22 @@ public class UsuarioDAO {
             ps = con.prepareStatement(Querys.QUERY_USUARIOS);
             rs = ps.executeQuery();
             while (rs.next()) {
+
+                PerfilTO p = new PerfilTO(
+                        rs.getInt("IDPERFIL"),
+                        rs.getString("PERFIL"),
+                        rs.getInt("CATALOGOUSUARIOS"),
+                        rs.getInt("CATALOGOPERFILES"),
+                        rs.getInt("CATALOGOLLANTAS"));
+//                
                 usuarios.add(
                         new UsuarioTO(
                                 rs.getInt("IDUSUARIO"),
                                 rs.getString("NOMBRE"),
                                 rs.getString("APATERNO"),
                                 rs.getString("AMATERNO"),
-                                rs.getTimestamp("FECHAREGISTRO")));
+                                rs.getInt("NOTIFICACIONES"),
+                                p));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -97,6 +108,7 @@ public class UsuarioDAO {
                         rs.getString("NOMBRE"),
                         rs.getString("APATERNO"),
                         rs.getString("AMATERNO"),
+                        rs.getInt("NOTIFICACIONES"),
                         new Date());
             }
 
@@ -146,6 +158,8 @@ public class UsuarioDAO {
             ps.setString(i++, u.getAmaterno());
             ps.setTimestamp(i++, new java.sql.Timestamp(new Date().getTime()));
             ps.setString(i++, u.getMail());
+            ps.setInt(i++, u.isNotifiaciones() ? 1 : 0);
+            ps.setInt(i++, u.getIdperfil());
             ps.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -154,5 +168,31 @@ public class UsuarioDAO {
             ConnectionUtil.endConnection(null, ps, con);
         }
         return false;
+    }
+
+    public void consultarPerfilUsuario(UsuarioTO u) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            con = DBConnectionManager.getInstance().getConnection();
+            ps = con.prepareStatement(Querys.QUERY_PERFIL_USUARIO);
+            ps.setInt(1, u.getIdperfil());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                PerfilTO p
+                        = new PerfilTO(
+                                rs.getInt("IDPERFIL"),
+                                rs.getString("NOMBRE"),
+                                rs.getInt("CATALOGOUSUARIOS"),
+                                rs.getInt("CATALOGOPERFILES"),
+                                rs.getInt("CATALOGOLLANTAS"));
+                u.setPerfil(p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            ConnectionUtil.endConnection(rs, ps, con);
+        }
     }
 }

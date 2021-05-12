@@ -9,7 +9,11 @@ import com.necron.controladores.UsuarioDAO;
 import com.necron.database.DBConnectionManager;
 import com.necron.to.UsuarioTO;
 import com.necron.util.Mails;
-import com.necron.util.Util;
+import java.io.File;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
 
 /**
  *
@@ -17,23 +21,60 @@ import com.necron.util.Util;
  */
 public class Pruebas {
 
-    //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
-//    Login
     public static void main(String[] args) {
-        DBConnectionManager.initInstance("IP", "USER", "PASSWORD", "pruebas");
-        String user = "admin";
-        String password = "IBGOT";
-        String encriptado = Util.encriptacion(password);
+        DBConnectionManager.initInstance("192.168.200.184", "antonio", "antonio", "pruebas");
 
         UsuarioDAO controlador = new UsuarioDAO();
-        UsuarioTO u = controlador.login(user, encriptado);
-        if(u!=null){
-        System.out.println("Hola: " + u.getApterno() + " " + u.getAmaterno() + " " + u.getNombre() + " | " + u.getFecharegistro());    
-        }else{
-            System.out.println("Credenciales Iválidas");
+        List<UsuarioTO> usuarios = controlador.consultarUsuarios();
+//        usuarios.forEach((u) -> {
+//            System.out.println("u: " + u.getIdusuario() + " | " + u.getPerfil().getNombre());
+//        });
+        StringBuilder stb;
+        String path = "C:\\Users\\freet\\OneDrive\\Documentos\\prueba.csv";
+        try {
+            File archivo = new File(path);
+            FileWriter escribir = new FileWriter(archivo);
+            for (UsuarioTO u : usuarios) {
+                stb = new StringBuilder();
+                stb.append(u.getApterno()).append(",").append(u.getAmaterno()).append(",").append(u.getNombre()).append(",")
+                        .append(u.getPerfil().getNombre()).append(",").append(u.getPerfil().isCatalogousuarios() ? "SI" : "NO");
+                escribir.write(stb.toString());
+                escribir.write("\n");
+            }
+            escribir.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        
+        try {
+            byte[] archivo = Files.readAllBytes(Paths.get(path));
+            Mails servidormail = new Mails();
+            boolean isvalidate = servidormail.enviarNotificacionReporte(archivo);
+            System.out.println("Exitoso! " + isvalidate);
+
+        } catch (Exception e) {
+        }
+
     }
+    //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
+//    Login
+//    public static void main(String[] args) {
+//        DBConnectionManager.initInstance("192.168.200.184", "antonio", "antonio", "pruebas");
+//        Mails controladormails = new Mails();
+//        String user = "admin";
+//        String password = "admin";
+//        String encriptado = Util.encriptacion(password);
+//
+//        UsuarioDAO controlador = new UsuarioDAO();
+//        UsuarioTO u = controlador.login(user, encriptado);
+//        if (u != null) {
+//            System.out.println("Hola: " + u.getApterno() + " " + u.getAmaterno() + " " + u.getNombre() + " | " + u.getFecharegistro());
+//            boolean isvalidate = controladormails.enviarNotificacionPlataforma(u);
+//            System.out.println("Exitoso! " + isvalidate);
+//        } else {
+//            System.out.println("Credenciales Iválidas");
+//        }
+//
+//    }
 ////    Credenciales
 //    public static void main(String[] args) {
 //        DBConnectionManager.initInstance("192.168.200.184", "antonio", "antonio", "pruebas");
@@ -45,14 +86,17 @@ public class Pruebas {
 //        String encriptado = Util.encriptacion(password);
 //        System.out.println("Encriptado: " + encriptado);
 ////
-//        UsuarioTO u = new UsuarioTO("admin", password, "Juan", "Zaldivar", "Roldan", "isc.antonioduran@gmail.com");
+//        UsuarioTO u = new UsuarioTO("admin", password, "Juan", "Zaldivar", "Roldan", "isc.antonioduran@gmail.com", 1, 0);
 //        boolean isvalidate = controlador.crearUsuario(u, encriptado);
 //        if (isvalidate) {
+//            controlador.consultarPerfilUsuario(u);
+////            
 //            Mails servermails = new Mails();
 //            isvalidate = servermails.enviarNotificacionAcceso(u);
 //        }
 //        System.out.println("Exitoso: " + isvalidate);
 //    }
+//    
 //    public static void main(String[] args) {
 //        DBConnectionManager.initInstance("localhost", "necron", "necron2019", "pruebas");
 //

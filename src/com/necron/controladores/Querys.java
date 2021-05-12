@@ -11,9 +11,24 @@ package com.necron.controladores;
  */
 public class Querys {
 
-    public static final String QUERY_LOGIN = "SELECT IDUSUARIO,NOMBRE,APATERNO,AMATERNO FROM usuariostb where user = ? and password = ? and ESTATUS = 1";
+    public static final String QUERY_LOGIN = "SELECT IDUSUARIO,NOMBRE,APATERNO,AMATERNO,NOTIFICACIONES FROM usuariostb where user = ? and password = ? and ESTATUS = 1";
 
-    public static final String QUERY_USUARIOS = "SELECT IDUSUARIO,USER,PASSWORD,NOMBRE,APATERNO,AMATERNO,FECHAREGISTRO FROM usuariostb";
+    public static final String QUERY_USUARIOS = "select "
+            + "u.IDUSUARIO IDUSUARIO,"
+            + "u.NOMBRE NOMBRE,"
+            + "u.APATERNO APATERNO,"
+            + "u.AMATERNO AMATERNO,"
+            + "u.NOTIFICACIONES NOTIFICACIONES,"
+            + "p.IDPERFIL IDPERFIL,"
+            + "p.NOMBRE PERFIL,"
+            + "p.CATALOGOUSUARIOS CATALOGOUSUARIOS,"
+            + "p.CATALOGOPERFILES CATALOGOPERFILES,"
+            + "p.CATALOGOLLANTAS CATALOGOLLANTAS "
+            + "from usuariostb u inner join perfilestb p on u.IDPERFIL = p.IDPERFIL";
 
-    public static final String INSERT_USUARIO = "insert into usuariostb (USER,PASSWORD,NOMBRE,APATERNO,AMATERNO,FECHAREGISTRO,MAIL,ESTATUS) values (?,?,?,?,?,?,?,1)";
+    public static final String INSERT_USUARIO = "insert into usuariostb (USER,PASSWORD,NOMBRE,APATERNO,AMATERNO,FECHAREGISTRO,MAIL,ESTATUS,NOTIFICACIONES,IDPERFIL) values (?,?,?,?,?,?,?,1,?,?)";
+
+    public static final String QUERY_USUARIOS_NOTIFCACIONES = "select MAIL from usuariostb where ESTATUS = 1 and NOTIFICACIONES = 1";
+
+    public static final String QUERY_PERFIL_USUARIO = "SELECT IDPERFIL,NOMBRE,CATALOGOUSUARIOS,CATALOGOPERFILES,CATALOGOLLANTAS FROM pruebas.perfilestb where IDPERFIL = ?";
 }
