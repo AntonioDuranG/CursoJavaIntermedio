@@ -8,11 +8,8 @@ package pruebas;
 import com.necron.controladores.UsuarioDAO;
 import com.necron.database.DBConnectionManager;
 import com.necron.to.UsuarioTO;
-import com.necron.util.Mails;
 import java.io.File;
 import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -21,44 +18,46 @@ import java.util.List;
  */
 public class Pruebas {
 
-    public static void main(String[] args) {
-        DBConnectionManager.initInstance("192.168.200.184", "antonio", "antonio", "pruebas");
-
-        UsuarioDAO controlador = new UsuarioDAO();
-        List<UsuarioTO> usuarios = controlador.consultarUsuarios();
-//        usuarios.forEach((u) -> {
-//            System.out.println("u: " + u.getIdusuario() + " | " + u.getPerfil().getNombre());
-//        });
-        StringBuilder stb;
-        String path = "C:\\Users\\freet\\OneDrive\\Documentos\\prueba.csv";
-        try {
-            File archivo = new File(path);
-            FileWriter escribir = new FileWriter(archivo);
-            for (UsuarioTO u : usuarios) {
-                stb = new StringBuilder();
-                stb.append(u.getApterno()).append(",").append(u.getAmaterno()).append(",").append(u.getNombre()).append(",")
-                        .append(u.getPerfil().getNombre()).append(",").append(u.getPerfil().isCatalogousuarios() ? "SI" : "NO");
-                escribir.write(stb.toString());
-                escribir.write("\n");
-            }
-            escribir.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        try {
-//            byte[] archivo = Files.readAllBytes(Paths.get(path));
-//            Mails servidormail = new Mails();
-//            boolean isvalidate = servidormail.enviarNotificacionReporte(archivo);
-//            System.out.println("Exitoso! " + isvalidate);
-//
-//        } catch (Exception e) {
-//        }
-
-    }
-    //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
-//    Login
 //    public static void main(String[] args) {
 //        DBConnectionManager.initInstance("192.168.200.184", "antonio", "antonio", "pruebas");
+//
+//        UsuarioDAO controlador = new UsuarioDAO();
+//        List<UsuarioTO> usuarios = controlador.consultarUsuarios();
+////        usuarios.forEach((u) -> {
+////            System.out.println("u: " + u.getIdusuario() + " | " + u.getPerfil().getNombre());
+////        });
+//        StringBuilder stb;
+//        String path = "C:\\Users\\freet\\OneDrive\\Documentos\\prueba.csv";
+//        try {
+//            File archivo = new File(path);
+//            FileWriter escribir = new FileWriter(archivo);
+//            for (UsuarioTO u : usuarios) {
+//                stb = new StringBuilder();
+//                stb.append(u.getApterno()).append(",").append(u.getAmaterno()).append(",").append(u.getNombre()).append(",")
+//                        .append(u.getPerfil().getNombre()).append(",").append(u.getPerfil().isCatalogousuarios() ? "SI" : "NO");
+//                escribir.write(stb.toString());
+//                escribir.write("\n");
+//            }
+//            escribir.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+////        try {
+////            byte[] archivo = Files.readAllBytes(Paths.get(path));
+////            Mails servidormail = new Mails();
+////            boolean isvalidate = servidormail.enviarNotificacionReporte(archivo);
+////            System.out.println("Exitoso! " + isvalidate);
+////
+////        } catch (Exception e) {
+////        }
+//
+//    }
+    //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
+//    Login
+    public static void main(String[] args) {
+        DBConnectionManager.initInstance("localhost", "root", "necron2019", "pruebas");
+
+        String path = args[0];
 //        Mails controladormails = new Mails();
 //        String user = "admin";
 //        String password = "admin";
@@ -167,8 +166,10 @@ public class Pruebas {
 //////            System.out.println("El Usuario si exste con el ID: " + mapa.get(llave).getIdusuario());
 //////        }
 //
-////        Hilo h = new Hilo();
-////        h.start();
-//    }
+        Hilo h = new Hilo();
+        h.start();
+        HiloReporte hr = new HiloReporte(path);
+        hr.start();
+    }
 
 }

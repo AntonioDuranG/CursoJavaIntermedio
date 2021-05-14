@@ -7,7 +7,6 @@ package com.necron.util;
 
 import com.necron.controladores.SesionDAO;
 import com.necron.to.UsuarioTO;
-import java.io.File;
 import java.util.List;
 import java.util.Properties;
 import javax.activation.DataHandler;
@@ -34,8 +33,8 @@ public class Mails {
 
     public Mails() {
         this.smtp = "smtp.gmail.com";
-        this.user = "asistente@necron.digital";
-        this.password = "asistentenecron2020";
+        this.user = "";
+        this.password = "";
         this.puerto = 587;
     }
 

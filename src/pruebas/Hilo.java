@@ -7,6 +7,7 @@ package pruebas;
 
 import com.necron.controladores.UsuarioDAO;
 import com.necron.to.UsuarioTO;
+import com.necron.util.Util;
 import java.util.Date;
 
 /**
@@ -15,27 +16,29 @@ import java.util.Date;
  */
 public class Hilo extends Thread {
 
+    private int i = 0;
+
+    public Hilo() {
+    }
+
     @Override
     public void run() {
         UsuarioDAO controlador = new UsuarioDAO();
-        int i = 0;
         while (true) {
-//            controlador.crearUsuario(
-//                    new UsuarioTO(
-//                            "admin" + i,
-//                            "adminadmin" + i,
-//                            "usuario " + i,
-//                            "paterno " + i,
-//                            "materno " + i, ""));
-//            i++;
-            System.out.println("Durmiendo.... " + new Date());
+            for (int j = 0; j < 5; j++) {
+                String password = Util.encriptacion("password " + i);
+                controlador.crearUsuario(
+                        new UsuarioTO("user " + i, "password " + i, "nombre" + i, "apaterno " + i, "amatrno " + i, "mail " + i, 1, 0), password);
+                i++;
+            }
+            System.out.println("DurmiendoHiloDatos.... " + new Date());
             dormir();
         }
     }
 
     private void dormir() {
         try {
-            sleep(10000);
+            sleep(20000);
         } catch (Exception e) {
             e.printStackTrace();
         }
