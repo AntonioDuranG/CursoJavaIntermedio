@@ -45,14 +45,14 @@ public class Pruebas {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        try {
-            byte[] archivo = Files.readAllBytes(Paths.get(path));
-            Mails servidormail = new Mails();
-            boolean isvalidate = servidormail.enviarNotificacionReporte(archivo);
-            System.out.println("Exitoso! " + isvalidate);
-
-        } catch (Exception e) {
-        }
+//        try {
+//            byte[] archivo = Files.readAllBytes(Paths.get(path));
+//            Mails servidormail = new Mails();
+//            boolean isvalidate = servidormail.enviarNotificacionReporte(archivo);
+//            System.out.println("Exitoso! " + isvalidate);
+//
+//        } catch (Exception e) {
+//        }
 
     }
     //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
