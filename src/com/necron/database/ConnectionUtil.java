@@ -8,7 +8,6 @@ package com.necron.database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  *
@@ -16,90 +15,32 @@ import java.sql.Statement;
  */
 public class ConnectionUtil {
 
-    public static boolean endConnection(ResultSet rs, Statement stmt,
-            Connection conn) {
-        boolean result = false;
+    public static boolean endConnection(ResultSet rs, PreparedStatement ps, Connection con, String operacion) {
         if (rs != null) {
             try {
                 rs.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
         }
-        if (stmt != null) {
+        if (ps != null) {
             try {
-                stmt.close();
+                ps.close();
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
         }
-        if (conn != null) {
+        if (con != null) {
             try {
-                conn.close();
+                con.close();
                 DBConnectionManager.conexionesTotalesAbiertas--;
-                result = true;
             } catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
         }
-        return result;
-    }
-
-    public static boolean endConnection(ResultSet rs, PreparedStatement pstmt,
-            Connection conn, String operacion) {
-        boolean result = false;
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-                DBConnectionManager.conexionesTotalesAbiertas--;
-                result = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    public static boolean endConnection(ResultSet rs, PreparedStatement pstmt,
-            Connection conn) {
-        boolean result = false;
-        if (rs != null) {
-            try {
-                rs.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (pstmt != null) {
-            try {
-                pstmt.close();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        if (conn != null) {
-            try {
-                conn.close();
-                DBConnectionManager.conexionesTotalesAbiertas--;
-                result = true;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
+        return true;
     }
 }

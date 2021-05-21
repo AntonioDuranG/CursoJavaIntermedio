@@ -35,8 +35,8 @@ public class UsuarioDAO {
             ps = con.prepareStatement(Querys.QUERY_USUARIOS);
             rs = ps.executeQuery();
             while (rs.next()) {
-                String llave = rs.getString("USER") + " | " + rs.getString("PASSWORD"); ///llave
-                mapa.put(llave,//<------indice o llabe
+                String llave = rs.getString("IDUSUARIO") + " | " + rs.getString("APATERNO"); ///llave
+                mapa.put(llave,//<------indice o llave
                         new UsuarioTO(
                                 rs.getInt("IDUSUARIO"),
                                 rs.getString("NOMBRE"),
@@ -49,7 +49,7 @@ public class UsuarioDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            ConnectionUtil.endConnection(rs, ps, con);
+            ConnectionUtil.endConnection(rs, ps, con, "UsuarioDAO.consultarUsuariosMapa");
         }
         return mapa;
     }
@@ -85,7 +85,7 @@ public class UsuarioDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            ConnectionUtil.endConnection(rs, ps, con);
+            ConnectionUtil.endConnection(rs, ps, con, "UsuarioDAO.consultarUsuarios");
         }
         return usuarios;
     }
@@ -115,7 +115,7 @@ public class UsuarioDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            ConnectionUtil.endConnection(rs, ps, con);
+            ConnectionUtil.endConnection(rs, ps, con, this.getClass() + ".login");
         }
         return null;
     }
@@ -139,7 +139,7 @@ public class UsuarioDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            ConnectionUtil.endConnection(null, ps, con);
+            ConnectionUtil.endConnection(null, ps, con, this.getClass() + ".crearUsuarios");
         }
         return false;
     }
@@ -165,7 +165,7 @@ public class UsuarioDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            ConnectionUtil.endConnection(null, ps, con);
+            ConnectionUtil.endConnection(null, ps, con, this.getClass() + ".crearUsuario");
         }
         return false;
     }
@@ -192,7 +192,7 @@ public class UsuarioDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            ConnectionUtil.endConnection(rs, ps, con);
+            ConnectionUtil.endConnection(rs, ps, con, this.getClass() + ".consultarPerfilUsuario");
         }
     }
 }

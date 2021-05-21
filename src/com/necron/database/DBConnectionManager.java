@@ -16,17 +16,17 @@ import java.util.Map;
 public class DBConnectionManager {
 
     private final static String BD_SERVICIO = "SERVICIO";
-    private final Map<String, ConnectionManagerPool> managers = new HashMap<>();
+    private final Map<String, ConnectionManagerPool> mapaconexiones = new HashMap<>();
     private static DBConnectionManager instance = null;
     public static int conexionesTotalesAbiertas = 0;
 
-    public DBConnectionManager(String ip, String user, String password, String database) {
-        init(ip, user, password, database);
+    private DBConnectionManager() {
+        init();
     }
 
-    public static void initInstance(String ip, String user, String password, String database) {
+    public static void initInstance() {
         if (instance == null) {
-            instance = new DBConnectionManager(ip, user, password, database);
+            instance = new DBConnectionManager();
         }
     }
 
@@ -34,24 +34,24 @@ public class DBConnectionManager {
         return instance;
     }
 
-    private void init(String ip, String user, String password, String database) {
-        managers.put(BD_SERVICIO, new ConnectionManagerPool(ip, user, password, database));
+    private void init() {
+        mapaconexiones.put(BD_SERVICIO, new ConnectionManagerPool());
     }
 
     public Connection getConnection() {
-
-        ConnectionManagerPool connectionManager = managers.get(BD_SERVICIO);
+        ConnectionManagerPool connectionManager = mapaconexiones.get(BD_SERVICIO);
         if (connectionManager == null) {
             throw new IllegalArgumentException("Base de Datos no existe o no inicializada");
         }
+        conexionesTotalesAbiertas++;
         return connectionManager.getConexion();
     }
-
-    public static int getConexionesTotalesAbiertas() {
-        return conexionesTotalesAbiertas;
-    }
-
-    public static void setConexionesTotalesAbiertas(int conexionesTotalesAbiertas) {
-        DBConnectionManager.conexionesTotalesAbiertas = conexionesTotalesAbiertas;
-    }
+//
+//    public static int getConexionesTotalesAbiertas() {
+//        return conexionesTotalesAbiertas;
+//    }
+//
+//    public static void setConexionesTotalesAbiertas(int conexionesTotalesAbiertas) {
+//        DBConnectionManager.conexionesTotalesAbiertas = conexionesTotalesAbiertas;
+//    }
 }

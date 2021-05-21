@@ -34,7 +34,7 @@ public class SesionDAO {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            ConnectionUtil.endConnection(rs, ps, con);
+            ConnectionUtil.endConnection(rs, ps, con, "SesionDAO.consultarUsuariosNotificaciones");
         }
         return emails;
     }

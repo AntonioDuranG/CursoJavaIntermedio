@@ -55,7 +55,7 @@ public class Pruebas {
     //BEAN SE CONECTA AL JSF Y PUEDE TENER PROCESOS
 //    Login
     public static void main(String[] args) {
-        DBConnectionManager.initInstance("localhost", "root", "necron2019", "pruebas");
+        DBConnectionManager.initInstance();
 
         String path = args[0];
 //        Mails controladormails = new Mails();
