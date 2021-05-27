@@ -16,6 +16,8 @@ import org.apache.commons.codec.binary.Hex;
  */
 public class Util {
 
+    private final static SimpleDateFormat SDF_TAG = new SimpleDateFormat("ddMMyyyy");
+
     private final static SimpleDateFormat SDF_TIEMPO = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 //    
     private final static String NUMEROS = "0123456789";
@@ -51,5 +53,9 @@ public class Util {
         }
 
         return pswd.toUpperCase();
+    }
+
+    public static final String getFechaTag() {
+        return SDF_TAG.format(new Date());
     }
 }

@@ -31,4 +31,10 @@ public class Querys {
     public static final String QUERY_USUARIOS_NOTIFCACIONES = "select MAIL from usuariostb where ESTATUS = 1 and NOTIFICACIONES = 1";
 
     public static final String QUERY_PERFIL_USUARIO = "SELECT IDPERFIL,NOMBRE,CATALOGOUSUARIOS,CATALOGOPERFILES,CATALOGOLLANTAS FROM pruebas.perfilestb where IDPERFIL = ?";
+
+    public static final String QUERY_ULTIMO_REGISTRO_TAG = "SELECT IDLLANTA FROM llantastb order by IDLLANTA desc limit 1";
+
+    public static final String INSERT_TAG = "insert into llantastb (TAG,FECHAADQUISICION,ESTATUSINVENTARIO) values (?,?,?)";
+
+    public static final String QUERY_TAG_DISPONIBLE = "select IDLLANTA,TAG from llantastb where ESTATUSINVENTARIO = -1 order by IDLLANTA asc limit 1";
 }
